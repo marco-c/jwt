@@ -13,6 +13,7 @@ use BadMethodCallException;
 use Lcobucci\Jose\Parsing;
 use Lcobucci\JWT\Claim\Factory as ClaimFactory;
 use Lcobucci\JWT\Signer\Key;
+use Lcobucci\JWT\Claim\Basic;
 
 /**
  * This class makes easier the token creation process
@@ -51,24 +52,14 @@ class Builder
     private $encoder;
 
     /**
-     * The factory of claims
-     *
-     * @var ClaimFactory
-     */
-    private $claimFactory;
-
-    /**
      * Initializes a new builder
      *
      * @param Parsing\Encoder $encoder
      * @param ClaimFactory $claimFactory
      */
-    public function __construct(
-        Parsing\Encoder $encoder = null,
-        ClaimFactory $claimFactory = null
-    ) {
+    public function __construct(Parsing\Encoder $encoder = null)
+    {
         $this->encoder = $encoder ?: new Parsing\Parser();
-        $this->claimFactory = $claimFactory ?: new ClaimFactory();
         $this->headers = ['typ'=> 'JWT', 'alg' => 'none'];
         $this->claims = [];
     }
@@ -200,7 +191,7 @@ class Builder
             throw new BadMethodCallException('You must unsign before make changes');
         }
 
-        $this->headers[$name] = $this->claimFactory->create($name, $value);
+        $this->headers[$name] = new Basic($name, $value);
 
         return $this;
     }
@@ -221,7 +212,7 @@ class Builder
             throw new BadMethodCallException('You must unsign before make changes');
         }
 
-        $this->claims[$name] = $this->claimFactory->create($name, $value);
+        $this->claims[$name] = new Basic($name, $value);
 
         return $this;
     }
