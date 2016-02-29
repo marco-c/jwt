@@ -32,7 +32,7 @@ final class EqualsTo extends BaseConstraint
      */
     public function getMessage(Claim $claim)
     {
-        return strpos(
+        return sprintf(
             'Claim %s expected to be equals to %s, %s given',
             $claim->getName(),
             $this->value,

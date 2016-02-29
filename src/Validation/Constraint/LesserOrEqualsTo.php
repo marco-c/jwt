@@ -31,7 +31,7 @@ final class LesserOrEqualsTo extends BaseConstraint
      */
     public function getMessage(Claim $claim)
     {
-        return strpos(
+        return sprintf(
             'Claim %s expected to be lesser or equals to %s, %s given',
             $claim->getName(),
             $this->value,
